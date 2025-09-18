@@ -13,10 +13,8 @@
         "triggerOn": "specificFolder",
         "folderToWatch": {
           "__rl": true,
-          "value": "1isugu5JLKlh0006hp24hNZirddzoU_eI",
-          "mode": "list",
-          "cachedResultName": "Resume sample folder",
-          "cachedResultUrl": "https://drive.google.com/drive/folders/1isugu5JLKlh0006hp24hNZirddzoU_eI"
+          "value": "<CREDENTIAL_OR_ID>",
+          "mode": "list"
         },
         "event": "fileCreated",
         "options": {}
@@ -27,13 +25,10 @@
         -1040,
         320
       ],
-      "id": "13660f49-4dc0-4e93-aee6-369b07c4daa8",
+      "id": "<RESOURCE_ID>",
       "name": "New Resume Uploaded (Google Drive)",
       "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "aZxjhbLj6UIztNqN",
-          "name": "Google Drive account"
-        }
+        "__REDACTED__": true
       }
     },
     {
@@ -52,13 +47,10 @@
         -816,
         320
       ],
-      "id": "ace95cc2-7d96-4fd3-a613-c51824f96609",
+      "id": "<RESOURCE_ID>",
       "name": "Download Resume File (from Drive)",
       "credentials": {
-        "googleDriveOAuth2Api": {
-          "id": "aZxjhbLj6UIztNqN",
-          "name": "Google Drive account"
-        }
+        "__REDACTED__": true
       }
     },
     {
@@ -73,7 +65,7 @@
         -592,
         320
       ],
-      "id": "d6a347d2-e377-4c6e-968a-9822c4758565",
+      "id": "<RESOURCE_ID>",
       "name": "Save Resume to Disk"
     },
     {
@@ -86,18 +78,18 @@
         -368,
         320
       ],
-      "id": "4be1f8f3-4241-4fb4-bdfb-7b01a0a1c77a",
+      "id": "<RESOURCE_ID>",
       "name": "Loop: Process Each Resume"
     },
     {
       "parameters": {
-        "command": "=python -c \"import sys, os, json; os.environ['TYPHOON_OCR_API_KEY'] = 'sk-EXq8Ggb1nzRl4PYxRMflKgOPgrhctcDuhuhDixcmPCXq17GR'; from typhoon_ocr import ocr_document; input_path = '/tmp/{{ $binary.data.fileName }}'; text = ocr_document(input_path); print(json.dumps({'ocr_text': text}, ensure_ascii=False))\"\n"
+        "command": "=python -c \"import sys, os, json; os.environ.setdefault('TYPHOON_OCR_API_KEY', os.environ.get('TYPHOON_OCR_API_KEY','')); from typhoon_ocr import ocr_document; input_path = '/tmp/{{ $binary.data.fileName }}'; text = ocr_document(input_path); print(json.dumps({'ocr_text': text}, ensure_ascii=False))\"\n"
       },
-      "id": "f3e3c33b-f673-4088-8c72-6a578a1de5b9",
+      "id": "<RESOURCE_ID>",
       "name": "OCR: Extract Text from Resume (Typhoon OCR)",
       "type": "n8n-nodes-base.executeCommand",
       "position": [
-        -144,
+        -128,
         144
       ],
       "typeVersion": 1
@@ -105,7 +97,7 @@
     {
       "parameters": {
         "schemaType": "manual",
-        "inputSchema": "{\n  \"type\": \"object\",\n  \"properties\": {\n    \"candidate\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"name\": { \"type\": \"string\" },\n        \"email\": { \"type\": \"string\" },\n        \"links\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"name\", \"email\", \"links\"]\n    },\n    \"education\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"degree\": { \"type\": \"string\" },\n          \"field\": { \"type\": \"string\" },\n          \"institution\": { \"type\": \"string\" },\n          \"graduation_year\": { \"type\": \"string\" },\n          \"evidence\": { \"type\": \"string\" }\n        },\n        \"required\": [\"degree\", \"field\", \"institution\", \"graduation_year\", \"evidence\"]\n      }\n    },\n    \"experience\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"role\": { \"type\": \"string\" },\n          \"organization\": { \"type\": \"string\" },\n          \"duration\": { \"type\": \"string\" },\n          \"period\": { \"type\": \"string\" },\n          \"highlights\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"evidence\": { \"type\": \"string\" }\n        },\n        \"required\": [\"role\", \"organization\", \"highlights\", \"evidence\"]\n      }\n    },\n    \"skills\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"technical\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"soft\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"technical\", \"soft\"]\n    },\n    \"knowledge\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n    \"tools\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n    \"matches\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"responsibilities\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"item\": { \"type\": \"string\" },\n              \"match_level\": {\n                \"type\": \"string\",\n                \"enum\": [\"present\", \"partial\", \"missing\"]\n              },\n              \"evidence\": { \"type\": \"string\" },\n              \"confidence\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 1 }\n            },\n            \"required\": [\"item\", \"match_level\", \"evidence\", \"confidence\"]\n          }\n        },\n        \"qualifications\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"item\": { \"type\": \"string\" },\n              \"match_level\": {\n                \"type\": \"string\",\n                \"enum\": [\"present\", \"partial\", \"missing\"]\n              },\n              \"evidence\": { \"type\": \"string\" },\n              \"confidence\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 1 }\n            },\n            \"required\": [\"item\", \"match_level\", \"evidence\", \"confidence\"]\n          }\n        }\n      },\n      \"required\": [\"responsibilities\", \"qualifications\"]\n    },\n    \"notes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"strengths\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"gaps\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"recommendations\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"strengths\", \"gaps\", \"recommendations\"]\n    },\n    \"METADATA\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"file_name\": { \"type\": \"string\" },\n        \"upload_date\": { \"type\": \"string\" }\n      },\n      \"required\": [\"file_name\", \"upload_date\"]\n    },\n    \"RESULT\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"name\": { \"type\": \"string\" },\n        \"point\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 },\n        \"reason\": { \"type\": \"string\" }\n      },\n      \"required\": [\"name\", \"point\", \"reason\"]\n    }\n  },\n  \"required\": [\n    \"candidate\",\n    \"education\",\n    \"experience\",\n    \"skills\",\n    \"knowledge\",\n    \"tools\",\n    \"matches\",\n    \"notes\",\n    \"METADATA\",\n    \"RESULT\"\n  ],\n  \"additionalProperties\": false\n}\n",
+        "inputSchema": "{\n  \"$schema\": \"http://json-schema.org/draft-07/schema#\",\n  \"type\": \"object\",\n  \"additionalProperties\": false,\n  \"properties\": {\n    \"candidate\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"name\": { \"type\": \"string\" },\n        \"email\": { \"type\": \"string\" },\n        \"links\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"name\", \"email\", \"links\"],\n      \"additionalProperties\": false\n    },\n    \"education\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"degree\": { \"type\": \"string\" },\n          \"field\": { \"type\": \"string\" },\n          \"institution\": { \"type\": \"string\" },\n          \"graduation_year\": { \"type\": \"string\" },\n          \"evidence\": { \"type\": \"string\" }\n        },\n        \"required\": [\"degree\", \"field\", \"institution\", \"graduation_year\", \"evidence\"],\n        \"additionalProperties\": false\n      }\n    },\n    \"experience\": {\n      \"type\": \"array\",\n      \"items\": {\n        \"type\": \"object\",\n        \"properties\": {\n          \"role\": { \"type\": \"string\" },\n          \"organization\": { \"type\": \"string\" },\n          \"duration\": { \"type\": \"string\" },\n          \"period\": { \"type\": \"string\" },\n          \"highlights\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n          \"evidence\": { \"type\": \"string\" }\n        },\n        \"required\": [\"role\", \"organization\", \"highlights\", \"evidence\"],\n        \"additionalProperties\": false\n      }\n    },\n    \"skills\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"technical\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"soft\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"technical\", \"soft\"],\n      \"additionalProperties\": false\n    },\n    \"knowledge\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n    \"tools\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n    \"matches\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"responsibilities\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"item\": { \"type\": \"string\" },\n              \"match_level\": { \"type\": \"string\", \"enum\": [\"present\", \"partial\", \"missing\"] },\n              \"evidence\": { \"type\": \"string\" },\n              \"confidence\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 1 }\n            },\n            \"required\": [\"item\", \"match_level\", \"evidence\", \"confidence\"],\n            \"additionalProperties\": false\n          }\n        },\n        \"qualifications\": {\n          \"type\": \"array\",\n          \"items\": {\n            \"type\": \"object\",\n            \"properties\": {\n              \"item\": { \"type\": \"string\" },\n              \"match_level\": { \"type\": \"string\", \"enum\": [\"present\", \"partial\", \"missing\"] },\n              \"evidence\": { \"type\": \"string\" },\n              \"confidence\": { \"type\": \"number\", \"minimum\": 0, \"maximum\": 1 }\n            },\n            \"required\": [\"item\", \"match_level\", \"evidence\", \"confidence\"],\n            \"additionalProperties\": false\n          }\n        }\n      },\n      \"required\": [\"responsibilities\", \"qualifications\"],\n      \"additionalProperties\": false\n    },\n    \"notes\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"strengths\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"gaps\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } },\n        \"recommendations\": { \"type\": \"array\", \"items\": { \"type\": \"string\" } }\n      },\n      \"required\": [\"strengths\", \"gaps\", \"recommendations\"],\n      \"additionalProperties\": false\n    },\n    \"RESULT\": {\n      \"type\": \"object\",\n      \"properties\": {\n        \"name\": { \"type\": \"string\" },\n        \"point\": { \"type\": \"integer\", \"minimum\": 0, \"maximum\": 100 },\n        \"reason\": { \"type\": \"string\" }\n      },\n      \"required\": [\"name\", \"point\", \"reason\"],\n      \"additionalProperties\": false\n    }\n  },\n  \"required\": [\n    \"candidate\",\n    \"education\",\n    \"experience\",\n    \"skills\",\n    \"knowledge\",\n    \"tools\",\n    \"matches\",\n    \"notes\",\n    \"RESULT\"\n  ]\n}\n",
         "autoFix": true
       },
       "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
@@ -114,7 +106,7 @@
         208,
         368
       ],
-      "id": "b0ae5fd3-f887-4602-bf33-1692c56349cb",
+      "id": "<RESOURCE_ID>",
       "name": "Parser: Convert LLM Output to JSON"
     },
     {
@@ -125,7 +117,7 @@
         "messages": {
           "messageValues": [
             {
-              "message": "=คุณคือผู้ช่วยวิเคราะห์ความตรงของเรซูเม่ต่อ JD สำหรับตำแหน่ง “AI & Data Solution Intern” ของบริษัทเทคฯ (โซลูชัน HR/การศึกษาโดยใช้ AI)\n\n## หลักการสำคัญ\n- วิเคราะห์จาก **OCR_TEXT เท่านั้น** ห้ามเดา/ห้ามฮัลลูซิเนต\n- ทุกการตัดสิน (present/partial/missing) ต้องมี **evidence** เป็น “คำ/วลี/โปรเจกต์/เครื่องมือ” ที่พบจริงใน OCR (คัดวลีสั้น ๆ)\n- ถ้าไม่พบให้ใส่ค่าว่าง \"\" หรือ [] ตามชนิดข้อมูล\n- **ต้องส่งออกเป็นออบเจ็กต์เดียวที่สอดคล้องกับ JSON Schema ของ Structured Output Parser ที่ให้ไว้** (ห้ามมีคีย์เกิน)\n\n## JD (ใช้เป็นเกณฑ์ตัดสิน)\n### Responsibilities (ต้องให้ผลครบทั้ง 6 ข้อใน matches.responsibilities)\n1) เก็บ/เข้าใจความต้องการกับผู้ใช้/ธุรกิจ\n2) ออกแบบ/พัฒนา/ปรับแต่ง prompt\n3) ออกแบบโครงสร้าง/กระบวนงาน/การใช้งานของ AI application\n4) ใช้ LLMs เพื่อพัฒนา AI application\n5) ทดสอบ/ประเมินประสิทธิภาพของ AI application\n6) ทำงานร่วมวิศวกรซอฟต์แวร์เพื่อนำขึ้นระบบจริง\n\n### Qualifications (ต้องให้ผลครบทุกหัวข้อใน matches.qualifications)\n- Python, prompt engineering, context engineering\n- คิดวิเคราะห์/แก้ปัญหา, สนใจ AI/automation/data-driven\n- พื้นฐาน NLP และแนวคิด Machine Learning\n- API, JSON, หรือ automation pipelines\n- พิเศษ: n8n, SQL, Docker, Cloud\n\n## นิยามการตัดสิน\n- present = มีหลักฐานตรงตัว\n- partial = กล่าวถึงใกล้เคียง/ยังไม่ครบถ้วน/มีบางส่วน\n- missing = ไม่พบหลักฐานใน OCR\n- ระบุ **confidence** ช่วง 0–1 (เช่น 0.75) ปัดทศนิยม 2 ตำแหน่ง\n\n## Must-Have Checklist (ต้องพบอย่างน้อย partial ขึ้นไป และใส่ไว้ใน RESULT.reason)\n1) Python\n2) Prompt engineering หรือ การใช้ LLM (อย่างน้อยหนึ่ง)\n3) อย่างน้อยหนึ่งใน: API / JSON / automation pipeline\n\n## วิธีให้คะแนน (รวม 100 ตามรูบริก A–D)\nA) ทักษะหลัก 40 → Python 10, Prompt 12, Context/RAG 10, NLP/ML 8\nB) ประสบการณ์ทำ AI/LLM App 30 → ใช้ LLM 10, โครงสร้าง/เวิร์กโฟลว์ 8, ทดสอบประเมิน 6, ทำงานร่วมทีม 6\nC) เครื่องมือ/เทคโนโลยี 15 → API/JSON/Automation 5, n8n 4, SQL/Docker/Cloud 6\nD) สอดคล้อง Responsibilities 15 → requirements 4, prompt 4, design 3, test 2, collaboration 2\n\n> ให้คำนวณจากหลักฐานจริงเท่านั้น: missing=0, partial≈ครึ่งน้ำหนัก, present≈เต็มน้ำหนัก แล้วปัดเป็นจำนวนเต็ม 0–100 ใส่ใน RESULT.point\n\n## แนวทางสกัดข้อมูลให้ตรง schema\n- candidate: ดึง name/email/links จาก OCR (ไม่พบให้ \"\" หรือ [])\n- education: ใส่ degree, field, institution, graduation_year และ evidence (วลีสั้น ๆ)\n- experience: ใส่ role, organization, duration/period (ถ้ามี), highlights (bullet สั้น ๆ), evidence (วลีสั้น ๆ; รวมหลายหลักฐานคั่นด้วย `; `)\n- skills.technical / skills.soft: เป็น array ของ strings\n- knowledge / tools: เป็น array ของ strings ที่พบจริง (เช่น \"NLP\", \"LangChain\", \"SQL\", \"Docker\", \"GCP\")\n- matches: เติม responsibilities ทั้ง 6 ข้อ และ qualifications ครบทุกหัวข้อ พร้อม match_level, evidence, confidence\n- notes: เติม strengths/gaps/recommendations ตามหลักฐานจริง\n- METADATA: ใส่ file_name และ upload_date จากอินพุตด้านล่าง\n- RESULT: \n  - name = ใช้จาก candidate.name\n  - point = คะแนนรวม 0–100\n  - reason = เหตุผลย่อ คั่นด้วย `;` เช่น \"มี Python; มี SQL; ไม่มี Docker; เคยเชื่อม LLM API\"\n\n## INPUTS (ฝังค่าให้ตรง METADATA)\n- file_name: {{ $json[\"file_name\"] || $json.file_name }}\n- upload_date: {{ $json[\"upload_date\"] || $json.upload_date }}\n\n## ส่งออก\n- ส่งออบเจ็กต์ JSON เดียวที่ **สอดคล้อง schema** ของ Structured Output Parser\n\n## OCR_TEXT (ใช้ข้อความในบล็อกนี้เท่านั้น)\n\"\"\" {{ $json[\"stdout\"] }} \"\"\"\n"
+              "message": "=คุณคือผู้ช่วยวิเคราะห์ความตรงของเรซูเม่ต่อ JD สำหรับตำแหน่ง “AI & Data Solution Intern” ของบริษัทเทคฯ (โซลูชัน HR/การศึกษาโดยใช้ AI)\n\n## กติกาสำคัญ\n- วิเคราะห์จาก **OCR_TEXT เท่านั้น** ห้ามเดา/ห้ามฮัลลูซิเนต\n- ทุกการตัดสิน (present / partial / missing) ต้องมี **evidence** เป็นคำ/วลี/โปรเจกต์/เครื่องมือที่พบจริงใน OCR (คัดวลีสั้น ๆ)\n- ถ้าไม่พบให้ใส่ค่าว่าง \"\" หรือ [] ตามชนิดข้อมูล\n- **ต้องส่งออกเป็น JSON ออบเจกต์เดียว** และต้อง **สอดคล้องกับ JSON Schema ของ Structured Output Parser ที่ให้ไว้** (ห้ามมีคีย์เกิน)\n\n## JD (เกณฑ์อ้างอิง)\n### Responsibilities (matches.responsibilities: ครบทั้ง 6 ข้อ)\n1) เก็บ/เข้าใจความต้องการกับผู้ใช้/ธุรกิจ  \n2) ออกแบบ/พัฒนา/ปรับแต่ง prompt  \n3) ออกแบบโครงสร้าง/กระบวนงาน/การใช้งานของ AI application  \n4) ใช้ LLMs เพื่อพัฒนา AI application  \n5) ทดสอบ/ประเมินประสิทธิภาพของ AI application  \n6) ทำงานร่วมวิศวกรซอฟต์แวร์เพื่อนำขึ้นระบบจริง  \n\n### Qualifications (matches.qualifications: ครบทุกหัวข้อ)\n- Python, prompt engineering, context engineering  \n- คิดวิเคราะห์/แก้ปัญหา, สนใจ AI/automation/data-driven  \n- พื้นฐาน NLP และแนวคิด Machine Learning  \n- API, JSON, หรือ automation pipelines  \n- พิเศษ: n8n, SQL, Docker, Cloud  \n\n## คำอธิบายการตัดสิน\n- present = มีหลักฐานตรงตัว  \n- partial = กล่าวถึงใกล้เคียง/บางส่วน  \n- missing = ไม่พบหลักฐาน  \n- ต้องมี **confidence** (0–1, ปัดทศนิยม 2 ตำแหน่ง)  \n\n## Must-Have Checklist (ต้องพบ ≥ partial และบันทึกใน RESULT.reason)\n1) Python  \n2) Prompt engineering หรือการใช้ LLM (≥1 อย่าง)  \n3) อย่างน้อยหนึ่งใน API / JSON / automation pipeline  \n\n## การให้คะแนน (รวม 100)\nA) ทักษะหลัก 40 → Python 10, Prompt 12, Context/RAG 10, NLP/ML 8  \nB) ประสบการณ์ทำ AI/LLM App 30 → ใช้ LLM 10, โครงสร้าง/เวิร์กโฟลว์ 8, ทดสอบประเมิน 6, ทำงานร่วมทีม 6  \nC) เครื่องมือ/เทคโนโลยี 15 → API/JSON/Automation 5, n8n 4, SQL/Docker/Cloud 6  \nD) สอดคล้อง Responsibilities 15 → requirements 4, prompt 4, design 3, test 2, collaboration 2  \n\n**หลักการให้คะแนน**  \n- missing = 0  \n- partial ≈ ครึ่งน้ำหนัก  \n- present ≈ เต็มน้ำหนัก  \n- รวมและปัดเป็นจำนวนเต็ม 0–100 → ใส่ใน RESULT.point  \n\n## วิธีแมปข้อมูลเข้ากับ Schema\n- candidate: name, email, links (ไม่พบให้ \"\" หรือ [])  \n- education: degree, field, institution, graduation_year, evidence  \n- experience: role, organization, duration/period, highlights (array), evidence (หลายหลักฐานคั่น `; `)  \n- skills: technical[], soft[]  \n- knowledge[], tools[] (สิ่งที่พบจริง เช่น NLP, LangChain, SQL, Docker, GCP)  \n- matches: responsibilities (6 ข้อ), qualifications (ครบทุกหัวข้อ) → match_level, evidence, confidence  \n- notes: strengths, gaps, recommendations ตามหลักฐานจริง  \n- RESULT:  \n  - name = candidate.name  \n  - point = คะแนนรวม 0–100  \n  - reason = เหตุผลย่อ คั่น `;` เช่น \"มี Python; มี SQL; ไม่มี Docker; เคยเชื่อม LLM API\"  \n\n## รูปแบบ Output\n- ส่งออกเป็น **ออบเจกต์ JSON เดียว** (ไม่ใส่โค้ดบล็อก ไม่ใส่ข้อความอื่น)  \n- ค่าและข้อความทั้งหมดต้องเป็น **ภาษาไทย**  \n\n## OCR_TEXT\n\"\"\" {{ $json[\"stdout\"] }} \"\"\"\n"
             }
           ]
         },
@@ -137,14 +129,14 @@
         112,
         144
       ],
-      "id": "17af3131-76f0-4ceb-97a6-a7c692fb932c",
+      "id": "<RESOURCE_ID>",
       "name": "LLM: Analyze Resume with JD"
     },
     {
       "parameters": {
         "projectId": {
           "__rl": true,
-          "value": "blissful-flame-471514-a3",
+          "value": "<VERTEX_AI_PROJECT_ID>",
           "mode": "id"
         },
         "modelName": "gemini-2.5-flash",
@@ -156,13 +148,10 @@
         80,
         368
       ],
-      "id": "631e7754-b058-4fff-9ba1-f984e5967018",
+      "id": "<RESOURCE_ID>",
       "name": "LLM Helper: Resume Scoring/Reasoning",
       "credentials": {
-        "googleApi": {
-          "id": "xFqVEUsnYtxaq6um",
-          "name": "Vertex AI API"
-        }
+        "__REDACTED__": true
       }
     },
     {
@@ -171,15 +160,12 @@
         "documentId": {
           "__rl": true,
           "mode": "url",
-          "value": "https://docs.google.com/spreadsheets/d/1ggK24tksPicvpG6D4k0iuTKjoBIHJcD76gijGTpmx3A/edit?gid=0#gid=0",
-          "__regex": "https:\\/\\/(?:drive|docs)\\.google\\.com(?:\\/.*|)\\/d\\/([0-9a-zA-Z\\-_]+)(?:\\/.*|)"
+          "value": "<CREDENTIAL_OR_ID>"
         },
         "sheetName": {
           "__rl": true,
           "value": "gid=0",
-          "mode": "list",
-          "cachedResultName": "Sheet1",
-          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1ggK24tksPicvpG6D4k0iuTKjoBIHJcD76gijGTpmx3A/edit#gid=0"
+          "mode": "list"
         },
         "columns": {
           "mappingMode": "defineBelow",
@@ -254,20 +240,17 @@
         576,
         320
       ],
-      "id": "b4437d95-a499-42f5-9a56-ec2fe7cc6aa9",
+      "id": "<RESOURCE_ID>",
       "name": "Save Results to Google Sheet (Append Row)",
       "credentials": {
-        "googleSheetsOAuth2Api": {
-          "id": "DNrQ3SqTjUUZg0Pp",
-          "name": "Google Sheets account"
-        }
+        "__REDACTED__": true
       }
     },
     {
       "parameters": {
         "projectId": {
           "__rl": true,
-          "value": "blissful-flame-471514-a3",
+          "value": "<VERTEX_AI_PROJECT_ID>",
           "mode": "id"
         },
         "modelName": "gemini-2.5-flash",
@@ -279,13 +262,10 @@
         288,
         576
       ],
-      "id": "37e3b7dd-0f44-42bd-8668-73f74a550a53",
+      "id": "<RESOURCE_ID>",
       "name": "LLM Helper: Additional Analysis",
       "credentials": {
-        "googleApi": {
-          "id": "xFqVEUsnYtxaq6um",
-          "name": "Vertex AI API"
-        }
+        "__REDACTED__": true
       }
     }
   ],
@@ -407,11 +387,5 @@
   "settings": {
     "executionOrder": "v1"
   },
-  "versionId": "74d61a7b-6b3f-4808-9e5f-2f4f2437f73e",
-  "meta": {
-    "templateCredsSetupCompleted": true,
-    "instanceId": "ef3a11d3e11f87d807cedc20cbe7aceec7bf8662d7629d4c2d998974e0802194"
-  },
-  "id": "JViuO9CXCizQhcdr",
   "tags": []
 }
