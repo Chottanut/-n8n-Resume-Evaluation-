@@ -1,4 +1,4 @@
-# -n8n Resume Evaluation-
+# -n8n Resume Evaluation- by Chottanut Wannasri
 
 This repository documents an **n8n** automation that evaluates uploaded resumes. It watches a Google Drive folder, downloads the newest PDF, extracts text with **Typhoon OCR**, analyzes it with **Vertex AI (Gemini 2.5-flash)**, parses a JSON result, and appends selected fields to **Google Sheets**.
 
