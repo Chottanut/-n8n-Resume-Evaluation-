@@ -171,7 +171,7 @@ Before running the workflow:
   <p align="center"><img src="https://github.com/user-attachments/assets/9f67786a-a138-4846-a961-5a3dbc9efb1e" alt="OCR output" width="900"></p>
 </figure>
 
-- Details of code stored in `code_inside_n8n.txt`.
+- Details of code stored in `code_inside_n8n.md`.
 
 ### 4) LLM Analysis (Gemini 2.5-flash)
 
@@ -209,7 +209,7 @@ Before running the workflow:
   <p align="center"><img src="https://github.com/user-attachments/assets/205b3a5f-b0dc-4bc0-aa98-8e089d5512df" alt="LLM output" width="900"></p>
 </figure>
 
-- Prompt stored in `code_inside_n8n.txt`.
+- Prompt stored in `code_inside_n8n.md`.
 
 ### 5) JSON Parsing
 
@@ -218,7 +218,7 @@ Before running the workflow:
   <p align="center"><img src="https://github.com/user-attachments/assets/e0aaedb4-840d-407f-95bb-535036f90e7b" alt="Parser node" width="900"></p>
 </figure>
 
-- Parses model output into structured JSON schema (see `code_inside_n8n.txt`).  
+- Parses model output into structured JSON schema (see `code_inside_n8n.md`).  
 
 <figure style="text-align:center;">
   <figcaption><strong>Schema preview</strong></figcaption>
